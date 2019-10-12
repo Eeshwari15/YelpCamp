@@ -1,25 +1,4 @@
 <% include partials/header %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="container">
 
 <div class="jumbotron jumbotron-fluid">
@@ -39,11 +18,16 @@
 <% campgrounds.forEach(function(camps){ %>
 <div class="col-md-3 col-sm-6">
 <img src="<%= camps.image %>" class="img-thumbnail" style="height:250px; width:350px">
-<h4><%= camps.name %></h4>
+
+<p><a href="/campgrounds/<%= camps._id %>" class="btn btn-primary">More Info</a></p>
+
+
 </div>
+
 
 <% });%>
 </div>
+
 </div>
 <% include partials/footer %>
 

@@ -1,35 +1,80 @@
-var express=require("express");
-var app=express();
-var bodyParser=require("body-parser");
-app.use(bodyParser.urlencoded({extende:true}));
+var express=require("express"),
+    app=express(),
+    bodyParser=require("body-parser"),
+    mongoose=require("mongoose");
+mongoose.connect("mongodb://localhost/yelp_camp");
+
+//Schema Setup
+var campgroundSchema=new mongoose.Schema({
+     name:String,
+     image:String,
+     description:String
+});
+var Campground=mongoose.model("Campground",campgroundSchema);
+//  Campground.create(
+//       { name:"Granite Hill",
+//       image:"https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+//        description:"This is a granite hill,Beautiful granite!!" 
+//      },function(Err,campground){
+//            if(Err)
+//            console.log("Error occured");
+//            else{
+//                 console.log("Add ho gya");
+//                 console.log(campground);
+//            }
+//      }
+// );
+
+
+
+
+app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
+
 app.get("/",function(req,res){
 res.render("landing");
 });
-
+//INDEX-show all campgrounds
 app.get("/campgrounds",function(req,res){
-    var campgrounds=[
-        
-           {name:"Salmon Creek",image:"https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Granite Hill",image:"https://images.unsplash.com/photo-1532339142463-fd0a8979791a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Mountain Goat's Rest",image:"https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Shalmon Creek",image:"https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Mountain Goat's Rest",image:"https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Granite Hill",image:"https://images.unsplash.com/photo-1537905569824-f89f14cceb68?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Goat's Rest",image:"https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Hill Granite",image:"https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-          {name:"Creek Salmon",image:"https://images.unsplash.com/photo-1525811902-f2342640856e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-
-     ]
-    res.render("campgrounds",{campgrounds:campgrounds});
-    });
     
-    app.post("/campgrounds",function(req,res){
-      res.send("Yu hit");
+     Campground.find({},function(err,allCampgrounds){
+          if(err)
+          console.log("Error aa gyi");
+          else{
+            
+    res.render("index",{campgrounds:allCampgrounds});
+          }
+     });
     });
+    //create 
+    app.post("/campgrounds",function(req,res){
+      var name=req.body.name;
+      var image=req.body.image;
+      var description=req.body.description;
+      var newCampground={name:name,image:image,description:description};
+      Campground.create(newCampground,function(err,newlyCreated){
+       if(err)
+       console.log("Are yrr error aa gyi!");
+       else
+       
+      res.redirect("/campgrounds");
+      });
+    });
+    //NEW-show form to create new campground
     app.get("/campgrounds/new",function(req,res){
          res.render("new");
     });
+   
+    app.get("/campgrounds/:id",function(req,res){
+         Campground.findById(req.params.id,function(err,foundCampground){
+              if(err)
+              console.log("Error oops!!");
+              else
+              res.render("show",{campground:foundCampground});
+         });
+});
+
+
 
 app.listen(3000,function(){
  console.log("started");
