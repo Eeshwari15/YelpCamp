@@ -1,0 +1,75 @@
+body {
+    background-color: #000;
+  }
+
+  #landing-header {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    padding-top: 40vh;
+  }
+  #landing-header h1 {
+    color: #fff;
+  }
+  
+  .slideshow { 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .slideshow li { 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    z-index: 0;
+    animation: imageAnimation 50s linear infinite; 
+  }  
+
+  .slideshow li:nth-child(1) { 
+    background-image: url(https://www.holidify.com/images/bgImages/MAHESHWAR.jpg) 
+  }
+  .slideshow li:nth-child(2) { 
+    background-image: url(https://www.holidify.com/images/compressed/9662.jpg);
+    animation-delay: 10s; 
+  }
+  .slideshow li:nth-child(3) { 
+    background-image: url(https://images.assettype.com/knocksense%2F2018-12%2F80b43776-337d-4057-b131-92092c7c35b4%2FLotus_valley.PNG?rect=0%2C180%2C778%2C292&w=1200&auto=format%2Ccompress&fit=max);
+    animation-delay: 20s; 
+  }
+  .slideshow li:nth-child(4) { 
+    background-image: url(http://www.mptourism.com/sites/default/files/styles/poi_image_3/public/pointofintrest/Rustic-charm-topped-with-scopes-for-adventure_0.jpg?itok=xgd9UENZ);
+    animation-delay: 30s; 
+  }
+  .slideshow li:nth-child(5) { 
+    background-image: url(http://www.mptourism.com/sites/default/files/styles/poi_image_2/public/pointofintrest/Sidhnath%20Temple.jpg?itok=jKoGULo1);
+    animation-delay: 40s; 
+  }
+  @keyframes imageAnimation { 
+    0% { 
+      opacity: 0; 
+      animation-timing-function: ease-in;
+    }
+    10% {
+      opacity: 1;
+      animation-timing-function: ease-out;
+    }
+    20% {
+      opacity: 1
+    }
+    30% {
+      opacity: 0
+    }
+  }
+    
